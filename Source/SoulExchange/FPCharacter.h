@@ -8,6 +8,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TimerManager.h"
+#include "InteractiveItems.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "FPCharacter.generated.h"
 
 UCLASS()
@@ -45,6 +47,9 @@ private:
 	void ChangeStaminaMinus();
 	void ChangeStaminaPlus();
 
+	FTimerHandle RayTimer;
+	void RayToSeeInteractiveItem();
+	AInteractiveItems* LastItem;
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;

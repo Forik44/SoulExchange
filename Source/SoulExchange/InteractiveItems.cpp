@@ -5,10 +5,14 @@
 
 // Sets default values
 AInteractiveItems::AInteractiveItems()
+	:
+	CanBeInteractive(true)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh->AttachTo(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -23,5 +27,14 @@ void AInteractiveItems::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AInteractiveItems::SetCustomDeapth(bool value)
+{
+	if (CanBeInteractive)
+	{
+		Mesh->SetRenderCustomDepth(value);
+		
+	}
 }
 

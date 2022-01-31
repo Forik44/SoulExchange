@@ -27,6 +27,7 @@ void AFPCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	ChangeSpeed(Speed);
+	GetWorld()->GetTimerManager().SetTimer(RayTimer, this, &AFPCharacter::RayToSeeInteractiveItem, 0.1f, true);
 }
 
 // Called every frame
@@ -34,6 +35,8 @@ void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	
+
 }
 
 // Called to bind functionality to input
@@ -133,6 +136,32 @@ void AFPCharacter::ChangeStaminaPlus()
 	{
 		GetWorld()->GetTimerManager().SetTimer(StaminaTimer, this, &AFPCharacter::ChangeStaminaPlus, 0.5f, true);
 		Stamina++;
+	}
+	
+}
+
+void AFPCharacter::RayToSeeInteractiveItem()
+{
+	FHitResult* Hit = new FHitResult();
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 400 + Start;
+
+	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_Visibility);
+
+	AInteractiveItems* Item = Cast<AInteractiveItems>(Hit->Actor);
+	
+	if (Item != LastItem && LastItem != nullptr)
+	{
+		LastItem->SetCustomDeapth(false);
+	}
+	if (!Item)
+	{
+		return;
+	}
+	else
+	{
+		LastItem = Item;
+		Item->SetCustomDeapth(true);
 	}
 	
 }

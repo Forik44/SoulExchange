@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
 #include "InteractiveItems.generated.h"
 
 UCLASS()
@@ -22,5 +23,13 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	bool CanBeInteractive;
 
+	UFUNCTION(BlueprintCallable, Category = "Interactive")
+	void SetCustomDeapth(bool value);
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Interactive")
+	UStaticMeshComponent* Mesh;
 };
