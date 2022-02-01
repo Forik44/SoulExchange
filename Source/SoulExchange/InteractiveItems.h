@@ -7,6 +7,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "InteractiveItems.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUseKeyPressedEvent);
+
 UCLASS()
 class SOULEXCHANGE_API AInteractiveItems : public AActor
 {
@@ -24,12 +26,18 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
+	UPROPERTY(EditAnywhere, Category = "Interactive")
 	bool CanBeInteractive;
 
 	UFUNCTION(BlueprintCallable, Category = "Interactive")
 	void SetCustomDeapth(bool value);
 
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FUseKeyPressedEvent OnUseKeyPressed;
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Interactive")
 	UStaticMeshComponent* Mesh;
+
+
 };

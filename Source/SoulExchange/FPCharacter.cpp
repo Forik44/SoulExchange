@@ -17,8 +17,12 @@ AFPCharacter::AFPCharacter()
 	bUseControllerRotationYaw = false;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->AttachTo(RootComponent);
+	Camera->SetupAttachment(GetRootComponent());
 	Camera->SetRelativeLocation(FVector(0, 0, 40));
+
+	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
+
+
 
 }
 
@@ -35,7 +39,7 @@ void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	
+	PhysicsHandle->SetTargetLocation(UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 150 + Camera->GetComponentLocation());
 
 }
 
@@ -53,6 +57,10 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	InputComponent->BindAction("Sprint", IE_Pressed, this, &AFPCharacter::StartSprint);
 	InputComponent->BindAction("Sprint", IE_Released, this, &AFPCharacter::EndSprint);
 
+	InputComponent->BindAction("Use", IE_Pressed, this, &AFPCharacter::UsePressed);
+	
+	InputComponent->BindAction("Take", IE_Pressed, this, &AFPCharacter::TakePressed);
+	InputComponent->BindAction("Take", IE_Released, this, &AFPCharacter::TakeReleased);
 }
 
 void AFPCharacter::HoriMove(float value)
@@ -165,4 +173,53 @@ void AFPCharacter::RayToSeeInteractiveItem()
 	}
 	
 }
+
+void AFPCharacter::UsePressed()
+{
+	FHitResult* Hit = new FHitResult();
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 400 + Start;
+
+	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_Visibility);
+	AInteractiveItems* Item = Cast<AInteractiveItems>(Hit->Actor);
+	if (!Item)
+	{
+		return;
+	}
+	Item->OnUseKeyPressed.Broadcast();
+}
+
+void AFPCharacter::TakePressed()
+{
+
+	FHitResult* Hit = new FHitResult();
+	FVector Start = Camera->GetComponentLocation() + 50 * UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation());
+	FVector End = UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 225 + Start;
+
+	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_PhysicsBody);
+	AInteractiveItems* Item = Cast<AInteractiveItems>(Hit->Actor);
+	if (!Item )
+	{
+		return;
+	}
+
+	ItemInHand = Hit->GetComponent();
+
+	if(ItemInHand->GetMass() > 500)
+	{
+		return;
+	}
+
+	ItemInHand->SetAngularDamping(10);
+	PhysicsHandle->GrabComponentAtLocation(Hit->GetComponent(), FName(), Item->GetActorLocation());
+}
+
+void AFPCharacter::TakeReleased()
+{
+	PhysicsHandle->ReleaseComponent();
+	ItemInHand->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
+	ItemInHand->SetAngularDamping(0);
+}
+
+
 

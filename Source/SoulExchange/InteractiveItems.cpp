@@ -12,7 +12,8 @@ AInteractiveItems::AInteractiveItems()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->AttachTo(RootComponent);
+	Mesh->SetupAttachment(GetRootComponent());
+
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +35,6 @@ void AInteractiveItems::SetCustomDeapth(bool value)
 	if (CanBeInteractive)
 	{
 		Mesh->SetRenderCustomDepth(value);
-		
 	}
 }
 

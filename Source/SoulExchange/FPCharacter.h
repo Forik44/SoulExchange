@@ -10,6 +10,7 @@
 #include "TimerManager.h"
 #include "InteractiveItems.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "FPCharacter.generated.h"
 
 UCLASS()
@@ -51,8 +52,18 @@ private:
 	void RayToSeeInteractiveItem();
 	AInteractiveItems* LastItem;
 
+	void UsePressed();
+
+	void TakePressed();
+	void TakeReleased();
+
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	UPhysicsHandleComponent* PhysicsHandle;
+
+	UPrimitiveComponent* ItemInHand;
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float Speed;
