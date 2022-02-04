@@ -38,9 +38,15 @@ void AFPCharacter::BeginPlay()
 void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+	if (!ItemInHand)
+	{
+		return;
+	}
 	PhysicsHandle->SetTargetLocation(UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 150 + Camera->GetComponentLocation());
-
+	if (sqrt((Camera->GetComponentLocation().X - ItemInHand->GetComponentLocation().X)* (Camera->GetComponentLocation().X - ItemInHand->GetComponentLocation().X) + (Camera->GetComponentLocation().Y - ItemInHand->GetComponentLocation().Y)* (Camera->GetComponentLocation().Y - ItemInHand->GetComponentLocation().Y) + (Camera->GetComponentLocation().Z - ItemInHand->GetComponentLocation().Z)* (Camera->GetComponentLocation().Z - ItemInHand->GetComponentLocation().Z)) > 225)
+	{
+		TakeReleased();
+	}
 }
 
 // Called to bind functionality to input
@@ -61,6 +67,8 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	
 	InputComponent->BindAction("Take", IE_Pressed, this, &AFPCharacter::TakePressed);
 	InputComponent->BindAction("Take", IE_Released, this, &AFPCharacter::TakeReleased);
+
+	InputComponent->BindAction("TakeToInventory", IE_Pressed, this, &AFPCharacter::TakeToInventoryPressed);
 }
 
 void AFPCharacter::HoriMove(float value)
@@ -193,10 +201,10 @@ void AFPCharacter::TakePressed()
 {
 
 	FHitResult* Hit = new FHitResult();
-	FVector Start = Camera->GetComponentLocation() + 50 * UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation());
+	FVector Start = Camera->GetComponentLocation();
 	FVector End = UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 225 + Start;
 
-	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_PhysicsBody);
+	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_Visibility);
 	AInteractiveItems* Item = Cast<AInteractiveItems>(Hit->Actor);
 	if (!Item )
 	{
@@ -217,8 +225,28 @@ void AFPCharacter::TakePressed()
 void AFPCharacter::TakeReleased()
 {
 	PhysicsHandle->ReleaseComponent();
+	if (!ItemInHand)
+	{
+		return;
+	}
 	ItemInHand->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
 	ItemInHand->SetAngularDamping(0);
+	ItemInHand = nullptr;
+}
+
+void AFPCharacter::TakeToInventoryPressed()
+{
+	FHitResult* Hit = new FHitResult();
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 225 + Start;
+
+	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_Visibility);
+	AInteractiveItems* Item = Cast<AInteractiveItems>(Hit->Actor);
+	if (!Item)
+	{
+		return;
+	}
+	OnTakeToInventoryKeyPressed.Broadcast(Item);
 }
 
 

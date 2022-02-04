@@ -13,6 +13,10 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "FPCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTakeToInventoryKeyPressedEvent, AInteractiveItems*, Item);
+
+
+
 UCLASS()
 class SOULEXCHANGE_API AFPCharacter : public ACharacter
 {
@@ -32,6 +36,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FTakeToInventoryKeyPressedEvent OnTakeToInventoryKeyPressed;
 
 private:
 	void HoriMove(float value);
@@ -56,6 +63,8 @@ private:
 
 	void TakePressed();
 	void TakeReleased();
+
+	void TakeToInventoryPressed();
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;
