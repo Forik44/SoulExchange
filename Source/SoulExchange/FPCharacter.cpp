@@ -69,6 +69,8 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	InputComponent->BindAction("Take", IE_Released, this, &AFPCharacter::TakeReleased);
 
 	InputComponent->BindAction("TakeToInventory", IE_Pressed, this, &AFPCharacter::TakeToInventoryPressed);
+
+	InputComponent->BindAction("Inventory", IE_Pressed, this, &AFPCharacter::InventoryPressed);
 }
 
 void AFPCharacter::HoriMove(float value)
@@ -247,6 +249,11 @@ void AFPCharacter::TakeToInventoryPressed()
 		return;
 	}
 	OnTakeToInventoryKeyPressed.Broadcast(Item);
+}
+
+void AFPCharacter::InventoryPressed()
+{
+	OnInventoryKeyPressed.Broadcast();
 }
 
 

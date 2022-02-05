@@ -14,7 +14,7 @@
 #include "FPCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTakeToInventoryKeyPressedEvent, AInteractiveItems*, Item);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventoryKeyPressedEvent);
 
 
 UCLASS()
@@ -37,8 +37,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(BlueprintAssignable, Category = "Health")
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FTakeToInventoryKeyPressedEvent OnTakeToInventoryKeyPressed;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FInventoryKeyPressedEvent OnInventoryKeyPressed;
 
 private:
 	void HoriMove(float value);
@@ -65,6 +68,8 @@ private:
 	void TakeReleased();
 
 	void TakeToInventoryPressed();
+
+	void InventoryPressed();
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;
