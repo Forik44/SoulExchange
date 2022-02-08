@@ -7,7 +7,8 @@
 AFPCharacter::AFPCharacter()
 	:
 	Speed(300),
-	Stamina(15)
+	Stamina(15),
+	isSplitPressed(false)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -71,6 +72,9 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	InputComponent->BindAction("TakeToInventory", IE_Pressed, this, &AFPCharacter::TakeToInventoryPressed);
 
 	InputComponent->BindAction("Inventory", IE_Pressed, this, &AFPCharacter::InventoryPressed);
+
+	InputComponent->BindAction("Split", IE_Pressed, this, &AFPCharacter::SplitPressed);
+	InputComponent->BindAction("Split", IE_Released, this, &AFPCharacter::SplitReleased);
 }
 
 void AFPCharacter::HoriMove(float value)
@@ -167,20 +171,27 @@ void AFPCharacter::RayToSeeInteractiveItem()
 	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_Visibility);
 
 	AInteractiveItems* Item = Cast<AInteractiveItems>(Hit->Actor);
-	
+
 	if (Item != LastItem && LastItem != nullptr)
 	{
 		LastItem->SetCustomDeapth(false);
 	}
 	if (!Item)
 	{
+		LastItem = nullptr;
 		return;
 	}
 	else
 	{
-		LastItem = Item;
-		Item->SetCustomDeapth(true);
+		if (LastItem != Item)
+		{
+			LastItem = Item;
+			Item->SetCustomDeapth(true);
+		}
 	}
+
+	
+	
 	
 }
 
@@ -253,7 +264,17 @@ void AFPCharacter::TakeToInventoryPressed()
 
 void AFPCharacter::InventoryPressed()
 {
-	OnInventoryKeyPressed.Broadcast();
+	OnInventoryKeyPressed.Broadcast(); 
+}
+
+void AFPCharacter::SplitPressed()
+{
+	isSplitPressed = true;
+} 
+
+void AFPCharacter::SplitReleased()
+{
+	isSplitPressed = false;
 }
 
 

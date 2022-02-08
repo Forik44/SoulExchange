@@ -43,6 +43,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FInventoryKeyPressedEvent OnInventoryKeyPressed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+	bool isSplitPressed;
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	UCameraComponent* Camera;
+
 private:
 	void HoriMove(float value);
 	void VertMove(float value);
@@ -71,8 +77,8 @@ private:
 
 	void InventoryPressed();
 
-	UPROPERTY(EditAnywhere, Category = "Camera")
-	UCameraComponent* Camera;
+	void SplitPressed();
+	void SplitReleased();
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UPhysicsHandleComponent* PhysicsHandle;
