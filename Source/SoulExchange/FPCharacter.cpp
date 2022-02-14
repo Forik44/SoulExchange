@@ -223,11 +223,12 @@ void AFPCharacter::TakePressed()
 	{
 		return;
 	}
-
+	
 	ItemInHand = Hit->GetComponent();
 
-	if(ItemInHand->GetMass() > 500)
+	if (ItemInHand->GetMass() >= 500.f)
 	{
+		ItemInHand = nullptr;
 		return;
 	}
 
