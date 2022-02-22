@@ -2,6 +2,9 @@
 
 
 #include "FPCharacter.h"
+#include "Kismet/GameplayStatics.h"
+#include "SoulExchangeGameModeBase.h"
+#include "FPSoulCharacter.h"
 
 // Sets default values
 AFPCharacter::AFPCharacter()
@@ -75,6 +78,8 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	InputComponent->BindAction("Split", IE_Pressed, this, &AFPCharacter::SplitPressed);
 	InputComponent->BindAction("Split", IE_Released, this, &AFPCharacter::SplitReleased);
+
+	InputComponent->BindAction("JumpToSoul", IE_Pressed, this, &AFPCharacter::JumpToSoul);
 }
 
 void AFPCharacter::HoriMove(float value)
@@ -276,6 +281,20 @@ void AFPCharacter::SplitPressed()
 void AFPCharacter::SplitReleased()
 {
 	isSplitPressed = false;
+}
+
+void AFPCharacter::JumpToSoul()
+{
+	ASoulExchangeGameModeBase* GameMode = Cast<ASoulExchangeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!GameMode)
+	{
+		return;
+	}
+
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = GetOwner();
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	GetWorld()->SpawnActor<AFPSoulCharacter>(Camera->GetComponentLocation(), Camera->GetComponentRotation(), SpawnParameters);
 }
 
 

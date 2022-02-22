@@ -50,6 +50,18 @@ public:
 	UCameraComponent* Camera;
 
 private:
+	UPROPERTY(EditAnywhere, Category = "Camera")
+		UPhysicsHandleComponent* PhysicsHandle;
+
+	UPrimitiveComponent* ItemInHand;
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+		float Speed;
+
+	bool isSprint;
+
+	int Stamina;
+
 	void HoriMove(float value);
 	void VertMove(float value);
 
@@ -80,16 +92,6 @@ private:
 	void SplitPressed();
 	void SplitReleased();
 
-	UPROPERTY(EditAnywhere, Category = "Camera")
-	UPhysicsHandleComponent* PhysicsHandle;
-
-	UPrimitiveComponent* ItemInHand;
-
-	UPROPERTY(EditAnywhere, Category = "Camera")
-	float Speed;
-	
-	bool isSprint;
-
-	int Stamina;
-
+	void JumpToSoul();
+	void JumpToFPCharacter();
 };
