@@ -290,7 +290,7 @@ void AFPCharacter::JumpToSoul()
 	{
 		return;
 	}
-
+	GameMode->JumpToSoul();
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = GetOwner();
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

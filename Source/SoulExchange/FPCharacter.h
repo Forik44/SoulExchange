@@ -51,7 +51,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Camera")
-		UPhysicsHandleComponent* PhysicsHandle;
+	UPhysicsHandleComponent* PhysicsHandle;
 
 	UPrimitiveComponent* ItemInHand;
 
