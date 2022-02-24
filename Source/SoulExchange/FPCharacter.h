@@ -93,5 +93,6 @@ private:
 	void SplitReleased();
 
 	void JumpToSoul();
+	void CancelJumpToSoul();
 	void JumpToFPCharacter();
 };

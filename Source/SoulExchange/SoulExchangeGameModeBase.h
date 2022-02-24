@@ -15,14 +15,22 @@ class SOULEXCHANGE_API ASoulExchangeGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
-private:
-	void ChangeCharacter(ACharacter* Character);
-
 public:
 	void JumpToSoul();
+	void CancelJumpToSoul();
 
 	UPROPERTY(BlueprintAssignable, Category = "Character")
 	FChangeCharacterPressed OnChangeCharacterPressed;
-	
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Soul")
+	float SoulSpawnTime;
+	
+private:
+	void ChangeCharacter(ACharacter* Character);
+
+	void JumpToSoulPrivate();
+
+	FTimerHandle SoulSpawnTimer;
+	void StartSpawnTimer();
+	void StopSpawnTimer();
 };

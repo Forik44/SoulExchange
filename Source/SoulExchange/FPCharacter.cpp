@@ -80,6 +80,7 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	InputComponent->BindAction("Split", IE_Released, this, &AFPCharacter::SplitReleased);
 
 	InputComponent->BindAction("JumpToSoul", IE_Pressed, this, &AFPCharacter::JumpToSoul);
+	InputComponent->BindAction("JumpToSoul", IE_Released, this, &AFPCharacter::CancelJumpToSoul);
 }
 
 void AFPCharacter::HoriMove(float value)
@@ -291,10 +292,16 @@ void AFPCharacter::JumpToSoul()
 		return;
 	}
 	GameMode->JumpToSoul();
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.Owner = GetOwner();
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	GetWorld()->SpawnActor<AFPSoulCharacter>(Camera->GetComponentLocation()+ UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 70, Camera->GetComponentRotation(), SpawnParameters);
+}
+
+void AFPCharacter::CancelJumpToSoul()
+{
+	ASoulExchangeGameModeBase* GameMode = Cast<ASoulExchangeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!GameMode)
+	{
+		return;
+	}
+	GameMode->CancelJumpToSoul();
 }
 
 

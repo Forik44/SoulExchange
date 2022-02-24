@@ -19,7 +19,7 @@ AFPSoulCharacter::AFPSoulCharacter()
 
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 
-
+	Camera->SetFieldOfView(110);
 
 }
 
@@ -31,7 +31,7 @@ void AFPSoulCharacter::BeginPlay()
 	UCapsuleComponent* Collision = Cast<UCapsuleComponent>(GetRootComponent());
 	Collision->SetCapsuleHalfHeight(45);
 	Collision->IgnoreActorWhenMoving(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0), 1);
-	UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCapsuleComponent()->IgnoreActorWhenMoving(this, 1);
+	
 	
 }
 
