@@ -24,6 +24,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Soul")
 	float SoulSpawnTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Soul")
+	float SoulLifeTime;
 	
 private:
 	void ChangeCharacter(ACharacter* Character);
@@ -33,4 +36,10 @@ private:
 	FTimerHandle SoulSpawnTimer;
 	void StartSpawnTimer();
 	void StopSpawnTimer();
+
+	FTimerHandle SoulLifeTimer;
+	void StartSoulLife();
+	void EndSoulLife();
+
+	ACharacter* MainFPCharacter;
 };
