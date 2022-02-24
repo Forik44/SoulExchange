@@ -45,9 +45,17 @@ private:
 	void HoriRot(float value);
 	void VertRot(float value);
 
+	void TakePressed();
+	void TakeReleased();
+
+	FTimerHandle RayTimer;
+	void RayToSeeInteractiveItem();
+	AInteractiveItems* LastItem;
+
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UPhysicsHandleComponent* PhysicsHandle;
 
+	UPrimitiveComponent* ItemInHand;
 
 
 };

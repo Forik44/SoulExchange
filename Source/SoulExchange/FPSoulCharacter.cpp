@@ -20,6 +20,10 @@ AFPSoulCharacter::AFPSoulCharacter()
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 
 	Camera->SetFieldOfView(110);
+	Camera->PostProcessSettings.VignetteIntensity = 1;
+	Camera->PostProcessSettings.bOverride_VignetteIntensity = true;
+	Camera->PostProcessSettings.GrainIntensity = 0.8;
+	Camera->PostProcessSettings.bOverride_GrainIntensity = true;
 
 }
 
@@ -27,7 +31,9 @@ AFPSoulCharacter::AFPSoulCharacter()
 void AFPSoulCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	 
+	
+	GetWorld()->GetTimerManager().SetTimer(RayTimer, this, &AFPSoulCharacter::RayToSeeInteractiveItem, 0.1f, true);
+
 	UCapsuleComponent* Collision = Cast<UCapsuleComponent>(GetRootComponent());
 	Collision->SetCapsuleHalfHeight(45);
 	Collision->IgnoreActorWhenMoving(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0), 1);
@@ -39,7 +45,15 @@ void AFPSoulCharacter::BeginPlay()
 void AFPSoulCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	if (!ItemInHand)
+	{
+		return;
+	}
+	PhysicsHandle->SetTargetLocation(UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 150 + Camera->GetComponentLocation());
+	if (sqrt((Camera->GetComponentLocation().X - ItemInHand->GetComponentLocation().X) * (Camera->GetComponentLocation().X - ItemInHand->GetComponentLocation().X) + (Camera->GetComponentLocation().Y - ItemInHand->GetComponentLocation().Y) * (Camera->GetComponentLocation().Y - ItemInHand->GetComponentLocation().Y) + (Camera->GetComponentLocation().Z - ItemInHand->GetComponentLocation().Z) * (Camera->GetComponentLocation().Z - ItemInHand->GetComponentLocation().Z)) > 225)
+	{
+		TakeReleased();
+	}
 }
 
 // Called to bind functionality to input
@@ -52,6 +66,9 @@ void AFPSoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	InputComponent->BindAxis("HoriRot", this, &AFPSoulCharacter::HoriRot);
 	InputComponent->BindAxis("VertRot", this, &AFPSoulCharacter::VertRot);
+
+	InputComponent->BindAction("Take", IE_Pressed, this, &AFPSoulCharacter::TakePressed);
+	InputComponent->BindAction("Take", IE_Released, this, &AFPSoulCharacter::TakeReleased);
 }
 
 void AFPSoulCharacter::ForwardMove(float value)
@@ -90,6 +107,73 @@ void AFPSoulCharacter::VertRot(float value)
 		if (Rotation < 85 && Rotation > -85)
 		{
 			Camera->AddLocalRotation(FRotator(value, 0, 0));
+		}
+	}
+}
+
+void AFPSoulCharacter::TakePressed()
+{
+
+	FHitResult* Hit = new FHitResult();
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 225 + Start;
+
+	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_Visibility);
+	AInteractiveItems* Item = Cast<AInteractiveItems>(Hit->Actor);
+	if (!Item)
+	{
+		return;
+	}
+
+	ItemInHand = Hit->GetComponent();
+
+	if (ItemInHand->GetMass() >= 500.f)
+	{
+		ItemInHand = nullptr;
+		return;
+	}
+
+	ItemInHand->SetAngularDamping(10);
+	PhysicsHandle->GrabComponentAtLocation(Hit->GetComponent(), FName(), Item->GetActorLocation());
+}
+
+void AFPSoulCharacter::TakeReleased()
+{
+	PhysicsHandle->ReleaseComponent();
+	if (!ItemInHand)
+	{
+		return;
+	}
+	ItemInHand->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
+	ItemInHand->SetAngularDamping(0);
+	ItemInHand = nullptr;
+}
+
+void AFPSoulCharacter::RayToSeeInteractiveItem()
+{
+	FHitResult* Hit = new FHitResult();
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 400 + Start;
+
+	GetWorld()->LineTraceSingleByChannel(*Hit, Start, End, ECC_Visibility);
+
+	AInteractiveItems* Item = Cast<AInteractiveItems>(Hit->Actor);
+
+	if (Item != LastItem && LastItem != nullptr)
+	{
+		LastItem->SetCustomDeapth(false);
+	}
+	if (!Item)
+	{
+		LastItem = nullptr;
+		return;
+	}
+	else
+	{
+		if (LastItem != Item)
+		{
+			LastItem = Item;
+			Item->SetCustomDeapth(true);
 		}
 	}
 }
