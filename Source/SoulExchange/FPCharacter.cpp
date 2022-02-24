@@ -294,7 +294,7 @@ void AFPCharacter::JumpToSoul()
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = GetOwner();
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	GetWorld()->SpawnActor<AFPSoulCharacter>(Camera->GetComponentLocation(), Camera->GetComponentRotation(), SpawnParameters);
+	GetWorld()->SpawnActor<AFPSoulCharacter>(Camera->GetComponentLocation()+ UKismetMathLibrary::GetForwardVector(Camera->GetComponentRotation()) * 70, Camera->GetComponentRotation(), SpawnParameters);
 }
 
 

@@ -30,6 +30,6 @@ void ASoulExchangeGameModeBase::JumpToSoul()
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = GetOwner();
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	AFPSoulCharacter* Soul = GetWorld()->SpawnActor<AFPSoulCharacter>(MainFPCharacter->Camera->GetComponentLocation(), MainFPCharacter->Camera->GetComponentRotation(), SpawnParameters);
+	AFPSoulCharacter* Soul = GetWorld()->SpawnActor<AFPSoulCharacter>(MainFPCharacter->Camera->GetComponentLocation(), FRotator(0, MainFPCharacter->Camera->GetComponentRotation().Yaw, MainFPCharacter->Camera->GetComponentRotation().Roll), SpawnParameters);
 	ChangeCharacter(Soul);
 }

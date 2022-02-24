@@ -3,6 +3,7 @@
 
 #include "FPSoulCharacter.h"
 #include "Components/InputComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFPSoulCharacter::AFPSoulCharacter()
@@ -19,12 +20,18 @@ AFPSoulCharacter::AFPSoulCharacter()
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 
 
+
 }
 
 // Called when the game starts or when spawned
 void AFPSoulCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	 
+	UCapsuleComponent* Collision = Cast<UCapsuleComponent>(GetRootComponent());
+	Collision->SetCapsuleHalfHeight(45);
+	Collision->IgnoreActorWhenMoving(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0), 1);
+	UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCapsuleComponent()->IgnoreActorWhenMoving(this, 1);
 	
 }
 
