@@ -27,6 +27,16 @@ AFPSoulCharacter::AFPSoulCharacter()
 
 }
 
+void AFPSoulCharacter::DeleteLastItem()
+{
+	if (!LastItem)
+	{
+		return;
+	}
+	LastItem->SetCustomDeapth(false);
+	LastItem = nullptr;
+}
+
 // Called when the game starts or when spawned
 void AFPSoulCharacter::BeginPlay()
 {

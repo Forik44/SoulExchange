@@ -49,6 +49,7 @@ void ASoulExchangeGameModeBase::StartSoulLife()
 
 void ASoulExchangeGameModeBase::EndSoulLife()
 {
+	Cast<AFPSoulCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->DeleteLastItem();
 	UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->Destroy();
 	ChangeCharacter(MainFPCharacter);
 }

@@ -27,6 +27,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;
 
+	void DeleteLastItem();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
