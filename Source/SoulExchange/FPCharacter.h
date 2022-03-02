@@ -11,9 +11,11 @@
 #include "InteractiveItems.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "SkillSystem.h"
 #include "FPCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTakeToInventoryKeyPressedEvent, AInteractiveItems*, Item);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventoryKeyPressedEvent);
 
 
@@ -49,6 +51,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+	USkillSystem* SkillsSystem;
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UPhysicsHandleComponent* PhysicsHandle;
@@ -56,7 +61,7 @@ private:
 	UPrimitiveComponent* ItemInHand;
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
-		float Speed;
+	float Speed;
 
 	bool isSprint;
 
@@ -94,5 +99,4 @@ private:
 
 	void JumpToSoul();
 	void CancelJumpToSoul();
-	void JumpToFPCharacter();
 };

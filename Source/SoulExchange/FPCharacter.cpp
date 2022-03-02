@@ -6,7 +6,7 @@
 #include "SoulExchangeGameModeBase.h"
 #include "FPSoulCharacter.h"
 
-// Sets default values
+
 AFPCharacter::AFPCharacter()
 	:
 	Speed(300),
@@ -26,7 +26,7 @@ AFPCharacter::AFPCharacter()
 
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 
-
+	SkillsSystem = CreateDefaultSubobject<USkillSystem>(TEXT("SkillSystem"));
 
 }
 
@@ -291,6 +291,9 @@ void AFPCharacter::JumpToSoul()
 	{
 		return;
 	}
+	SkillsSystem->SpawnedSkills[0]->UpLevel();
+	SkillsSystem->SpawnedSkills[1]->UpLevel();
+	SkillsSystem->SpawnedSkills[2]->UpLevel();
 	GameMode->JumpToSoul();
 }
 
@@ -303,6 +306,5 @@ void AFPCharacter::CancelJumpToSoul()
 	}
 	GameMode->CancelJumpToSoul();
 }
-
 
 

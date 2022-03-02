@@ -1,12 +1,9 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "FPSoulCharacter.h"
 #include "SoulExchangeGameModeBase.generated.h"
-
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChangeCharacterPressed, ACharacter*, Item);
 
@@ -27,6 +24,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Soul")
 	float SoulLifeTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Soul")
+	float SoulSpeed;
+
+	void SetSoulSpeed(float Speed);
 	
 private:
 	void ChangeCharacter(ACharacter* Character);

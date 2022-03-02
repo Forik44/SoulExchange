@@ -27,16 +27,6 @@ AFPSoulCharacter::AFPSoulCharacter()
 
 }
 
-void AFPSoulCharacter::DeleteLastItem()
-{
-	if (!LastItem)
-	{
-		return;
-	}
-	LastItem->SetCustomDeapth(false);
-	LastItem = nullptr;
-}
-
 // Called when the game starts or when spawned
 void AFPSoulCharacter::BeginPlay()
 {
@@ -79,6 +69,21 @@ void AFPSoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	InputComponent->BindAction("Take", IE_Pressed, this, &AFPSoulCharacter::TakePressed);
 	InputComponent->BindAction("Take", IE_Released, this, &AFPSoulCharacter::TakeReleased);
+}
+
+void AFPSoulCharacter::DeleteLastItem()
+{
+	if (!LastItem)
+	{
+		return;
+	}
+	LastItem->SetCustomDeapth(false);
+	LastItem = nullptr;
+}
+
+void AFPSoulCharacter::SetSpeed(float Speed)
+{
+	GetCharacterMovement()->MaxFlySpeed = Speed;
 }
 
 void AFPSoulCharacter::ForwardMove(float value)

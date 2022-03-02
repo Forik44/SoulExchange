@@ -4,6 +4,12 @@
 #include "SoulExchangeGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "FPCharacter.h"
+#include "GameFramework/Actor.h"
+
+void ASoulExchangeGameModeBase::SetSoulSpeed(float Speed)
+{
+	SoulSpeed = Speed;
+}
 
 void ASoulExchangeGameModeBase::ChangeCharacter(ACharacter* Character)
 {
@@ -27,6 +33,7 @@ void ASoulExchangeGameModeBase::JumpToSoulPrivate()
 	SpawnParameters.Owner = GetOwner();
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	AFPSoulCharacter* Soul = GetWorld()->SpawnActor<AFPSoulCharacter>(Cast<AFPCharacter>(MainFPCharacter)->Camera->GetComponentLocation(), FRotator(0, Cast<AFPCharacter>(MainFPCharacter)->Camera->GetComponentRotation().Yaw, Cast<AFPCharacter>(MainFPCharacter)->Camera->GetComponentRotation().Roll), SpawnParameters);
+	Soul->SetSpeed(SoulSpeed);
 	ChangeCharacter(Soul);
 	StartSoulLife();
 }
@@ -63,3 +70,4 @@ void ASoulExchangeGameModeBase::CancelJumpToSoul()
 {
 	StopSpawnTimer();
 }
+

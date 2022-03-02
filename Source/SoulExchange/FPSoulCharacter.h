@@ -12,6 +12,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "SkillSystem.h"
 #include "FPSoulCharacter.generated.h"
 
 UCLASS()
@@ -28,7 +29,7 @@ public:
 	UCameraComponent* Camera;
 
 	void DeleteLastItem();
-
+	void SetSpeed(float Speed);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
