@@ -20,10 +20,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	int Level;
 	int MaxLevel;
 
+	UFUNCTION(BlueprintCallable, Category = "Skills")
 	virtual bool UpLevel();
 };

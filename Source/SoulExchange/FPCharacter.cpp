@@ -291,9 +291,6 @@ void AFPCharacter::JumpToSoul()
 	{
 		return;
 	}
-	SkillsSystem->SpawnedSkills[0]->UpLevel();
-	SkillsSystem->SpawnedSkills[1]->UpLevel();
-	SkillsSystem->SpawnedSkills[2]->UpLevel();
 	GameMode->JumpToSoul();
 }
 
