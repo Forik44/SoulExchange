@@ -24,6 +24,9 @@ public:
 	int Level;
 	int MaxLevel;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+	FText Name;
+
 	UFUNCTION(BlueprintCallable, Category = "Skills")
 	virtual bool UpLevel();
 };

@@ -18,6 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTakeToInventoryKeyPressedEvent, AIn
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventoryKeyPressedEvent);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSkillSystemKeyPressedEvent);
 
 UCLASS()
 class SOULEXCHANGE_API AFPCharacter : public ACharacter
@@ -44,6 +45,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FInventoryKeyPressedEvent OnInventoryKeyPressed;
+
+	UPROPERTY(BlueprintAssignable, Category = "Skills")
+	FSkillSystemKeyPressedEvent OnSkillSystemKeyPressedEvent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
 	bool isSplitPressed;
@@ -99,4 +103,6 @@ private:
 
 	void JumpToSoul();
 	void CancelJumpToSoul();
+
+	void SkillsSystemPressed();
 };

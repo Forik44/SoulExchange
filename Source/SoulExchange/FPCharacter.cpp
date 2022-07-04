@@ -76,6 +76,8 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	InputComponent->BindAction("Inventory", IE_Pressed, this, &AFPCharacter::InventoryPressed);
 
+	InputComponent->BindAction("SkillsSystem", IE_Pressed, this, &AFPCharacter::SkillsSystemPressed);
+
 	InputComponent->BindAction("Split", IE_Pressed, this, &AFPCharacter::SplitPressed);
 	InputComponent->BindAction("Split", IE_Released, this, &AFPCharacter::SplitReleased);
 
@@ -302,6 +304,11 @@ void AFPCharacter::CancelJumpToSoul()
 		return;
 	}
 	GameMode->CancelJumpToSoul();
+}
+
+void AFPCharacter::SkillsSystemPressed()
+{
+	OnSkillSystemKeyPressedEvent.Broadcast();
 }
 
 

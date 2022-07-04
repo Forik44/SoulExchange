@@ -10,6 +10,7 @@ ASpeedSoulSkill::ASpeedSoulSkill()
 	StartValue(400),
 	Delta(100)
 {
+	
 	MaxLevel = 8;
 }
 
