@@ -1,7 +1,8 @@
-
 #include "SkillSystem.h"
 
-USkillSystem::USkillSystem()
+USkillSystem::USkillSystem() 
+:
+SkillPoints(9)
 {
 	PrimaryComponentTick.bCanEverTick = true;
 

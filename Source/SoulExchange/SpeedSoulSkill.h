@@ -13,7 +13,8 @@ UCLASS()
 class SOULEXCHANGE_API ASpeedSoulSkill : public ASkill
 {
 	GENERATED_BODY()
-	
+protected:
+	virtual void BeginPlay() override;
 public:
 	ASpeedSoulSkill();
 	virtual bool UpLevel() override;

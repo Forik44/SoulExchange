@@ -4,6 +4,7 @@
 #include "TimeSpawnSoulSkill.h"
 #include "SoulExchangeGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "FPCharacter.h"
 
 ATimeSpawnSoulSkill::ATimeSpawnSoulSkill()
 	:
@@ -16,15 +17,24 @@ ATimeSpawnSoulSkill::ATimeSpawnSoulSkill()
 bool ATimeSpawnSoulSkill::UpLevel()
 {
 	ASoulExchangeGameModeBase* GameMode = Cast<ASoulExchangeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	AFPCharacter* Character = Cast<AFPCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!GameMode)
 	{
 		return false;
 	}
 	if (Level < MaxLevel)
 	{
-		GameMode->SoulSpawnTime = StartValue + Level * Delta;
-		Level++;
-		return true;
+		if (Character->SkillsSystem->GetSkillPoints() > 0)
+		{
+			GameMode->SoulSpawnTime = StartValue + Level * Delta;
+			Level++;
+			Character->SkillsSystem->AddSkillPoints(-1);
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
 	}
 	else
 	{

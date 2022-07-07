@@ -21,7 +21,10 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills")
 	int Level;
+
 	int MaxLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")

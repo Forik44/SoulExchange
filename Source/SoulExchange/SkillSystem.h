@@ -29,8 +29,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
 	TArray<ASkill*> SpawnedSkills;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+	TArray<FText> Names;
+
+	UFUNCTION(BlueprintCallable, Category = "Skills")
 	void AddSkillPoints(int Value);
+
+	UFUNCTION(BlueprintCallable, Category = "Skills")
 	int GetSkillPoints();
+
 private:
 	int SkillPoints;
 	void SpawnSkills();
