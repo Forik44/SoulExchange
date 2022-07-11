@@ -29,6 +29,10 @@ public:
 	float SoulSpeed;
 
 	void SetSoulSpeed(float Speed);
+
+	FTransform QuatRotate_AroundOtherTransform(const FTransform& TargetT, const FTransform& TPoint, const FQuat& AddRotation);
+	UFUNCTION(BlueprintCallable, Category = "Interactive")
+	FTransform Rotate_AroundOtherTransform(const FTransform& TargetT, const FTransform& TPoint, const FRotator& AddRotation);
 	
 private:
 	void ChangeCharacter(ACharacter* Character);

@@ -35,9 +35,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FUseKeyPressedEvent OnUseKeyPressed;
 
-private:
-	UPROPERTY(EditAnywhere, Category = "Interactive")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interactive")
 	UStaticMeshComponent* Mesh;
+
 
 
 };

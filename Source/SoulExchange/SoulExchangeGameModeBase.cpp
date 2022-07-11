@@ -11,6 +11,20 @@ void ASoulExchangeGameModeBase::SetSoulSpeed(float Speed)
 	SoulSpeed = Speed;
 }
 
+FTransform ASoulExchangeGameModeBase::QuatRotate_AroundOtherTransform(const FTransform& TargetT, const FTransform& TPoint, const FQuat& AddRotation)
+{
+	FTransform T2 = TPoint;
+	T2.ConcatenateRotation(AddRotation);
+	FTransform T = TargetT * TPoint.Inverse() * T2;
+	T.NormalizeRotation();
+	return T;
+}
+
+FTransform ASoulExchangeGameModeBase::Rotate_AroundOtherTransform(const FTransform& TargetT, const FTransform& TPoint, const FRotator& AddRotation)
+{
+	return QuatRotate_AroundOtherTransform(TargetT, TPoint, FQuat(AddRotation));
+}
+
 void ASoulExchangeGameModeBase::ChangeCharacter(ACharacter* Character)
 {
 	if (!Character)
