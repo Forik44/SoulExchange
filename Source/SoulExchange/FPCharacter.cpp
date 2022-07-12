@@ -115,7 +115,7 @@ void AFPCharacter::VertRot(float value)
 	{
 		float Rotation = Camera->GetRelativeRotation().Pitch + value;
 
-		if (Rotation < 65 && Rotation > -65)
+		if (Rotation < 80 && Rotation > -80)
 		{
 			Camera->AddLocalRotation(FRotator(value, 0, 0));
 		}
