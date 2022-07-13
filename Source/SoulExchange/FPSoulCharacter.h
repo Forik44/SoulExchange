@@ -51,12 +51,17 @@ private:
 	void TakePressed();
 	void TakeReleased();
 
+	bool IsButtonFPressed;
+	bool IsButtonRPressed;
+
 	FTimerHandle RayTimer;
 	void RayToSeeInteractiveItem();
 	AInteractiveItems* LastItem;
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UPhysicsHandleComponent* PhysicsHandle;
+
+	UCapsuleComponent* Collision;
 
 	UPrimitiveComponent* ItemInHand;
 

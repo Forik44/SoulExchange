@@ -24,7 +24,7 @@ AFPSoulCharacter::AFPSoulCharacter()
 	Camera->PostProcessSettings.bOverride_VignetteIntensity = true;
 	Camera->PostProcessSettings.GrainIntensity = 0.8;
 	Camera->PostProcessSettings.bOverride_GrainIntensity = true;
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -33,10 +33,11 @@ void AFPSoulCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	GetWorld()->GetTimerManager().SetTimer(RayTimer, this, &AFPSoulCharacter::RayToSeeInteractiveItem, 0.1f, true);
-
-	UCapsuleComponent* Collision = Cast<UCapsuleComponent>(GetRootComponent());
+	
+	Collision = Cast<UCapsuleComponent>(GetRootComponent());
 	Collision->SetCapsuleHalfHeight(45);
 	Collision->IgnoreActorWhenMoving(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0), 1);
+	Collision->SetAngularDamping(0);
 	
 	
 }
@@ -44,7 +45,12 @@ void AFPSoulCharacter::BeginPlay()
 // Called every frame
 void AFPSoulCharacter::Tick(float DeltaTime)
 {
+	
 	Super::Tick(DeltaTime);
+	if (!IsButtonFPressed && !IsButtonRPressed)
+	{
+		GetMovementComponent()->StopMovementImmediately();
+	}
 	if (!ItemInHand)
 	{
 		return;
@@ -54,6 +60,7 @@ void AFPSoulCharacter::Tick(float DeltaTime)
 	{
 		TakeReleased();
 	}
+	
 }
 
 // Called to bind functionality to input
@@ -88,20 +95,31 @@ void AFPSoulCharacter::SetSpeed(float Speed)
 
 void AFPSoulCharacter::ForwardMove(float value)
 {
-	if (value)
-	{
+	if (value != 0)
+	{	
 		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
 		FRotator Rotator = Camera->GetComponentRotation();
 		FVector ForwardVector = UKismetMathLibrary::GetForwardVector(Rotator);
 		AddMovementInput(ForwardVector, value);
+		IsButtonFPressed = true;
+	}
+	else
+	{
+		IsButtonFPressed = false;
 	}
 }
 
 void AFPSoulCharacter::VertMove(float value)
 {
-	if (value)
+	if (value != 0)
 	{
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
 		AddMovementInput(GetActorRightVector(), value);
+		IsButtonRPressed = true;
+	}
+	else
+	{
+		IsButtonRPressed = false;
 	}
 }
 
@@ -119,7 +137,7 @@ void AFPSoulCharacter::VertRot(float value)
 	{
 		float Rotation = Camera->GetRelativeRotation().Pitch + value;
 
-		if (Rotation < 85 && Rotation > -85)
+		if (Rotation < 90 && Rotation > -90)
 		{
 			Camera->AddLocalRotation(FRotator(value, 0, 0));
 		}
