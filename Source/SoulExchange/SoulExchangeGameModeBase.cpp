@@ -48,6 +48,7 @@ void ASoulExchangeGameModeBase::JumpToSoulPrivate()
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	AFPSoulCharacter* Soul = GetWorld()->SpawnActor<AFPSoulCharacter>(Cast<AFPCharacter>(MainFPCharacter)->Camera->GetComponentLocation(), FRotator(0, Cast<AFPCharacter>(MainFPCharacter)->Camera->GetComponentRotation().Yaw, Cast<AFPCharacter>(MainFPCharacter)->Camera->GetComponentRotation().Roll), SpawnParameters);
 	Soul->SetSpeed(SoulSpeed);
+	Soul->PlayAudio();
 	ChangeCharacter(Soul);
 	StartSoulLife();
 }

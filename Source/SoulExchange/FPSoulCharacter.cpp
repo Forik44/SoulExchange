@@ -4,6 +4,7 @@
 #include "FPSoulCharacter.h"
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AFPSoulCharacter::AFPSoulCharacter()
@@ -13,9 +14,13 @@ AFPSoulCharacter::AFPSoulCharacter()
 
 	bUseControllerRotationYaw = false;
 
+	Audio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+
+
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(GetRootComponent());
 	Camera->SetRelativeLocation(FVector(0, 0, 40));
+
 
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 
@@ -39,7 +44,7 @@ void AFPSoulCharacter::BeginPlay()
 	Collision->IgnoreActorWhenMoving(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0), 1);
 	Collision->SetAngularDamping(0);
 	
-	
+	Audio->Sound = LoadObject<USoundCue>(nullptr, TEXT("/Game/Sounds/Effects/Soul"));
 }
 
 // Called every frame
@@ -76,6 +81,11 @@ void AFPSoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	InputComponent->BindAction("Take", IE_Pressed, this, &AFPSoulCharacter::TakePressed);
 	InputComponent->BindAction("Take", IE_Released, this, &AFPSoulCharacter::TakeReleased);
+}
+
+void AFPSoulCharacter::PlayAudio()
+{
+	Audio->Play(0);
 }
 
 void AFPSoulCharacter::DeleteLastItem()

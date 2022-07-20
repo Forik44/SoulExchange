@@ -13,7 +13,9 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "SkillSystem.h"
+#include "Components/AudioComponent.h"
 #include "FPSoulCharacter.generated.h"
+
 
 UCLASS()
 class SOULEXCHANGE_API AFPSoulCharacter : public ACharacter
@@ -27,6 +29,11 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	UAudioComponent* Audio;
+
+	void PlayAudio();
 
 	void DeleteLastItem();
 	void SetSpeed(float Speed);
@@ -60,6 +67,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UPhysicsHandleComponent* PhysicsHandle;
+
 
 	UCapsuleComponent* Collision;
 
