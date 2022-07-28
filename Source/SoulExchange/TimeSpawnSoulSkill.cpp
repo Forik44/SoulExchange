@@ -9,7 +9,7 @@
 ATimeSpawnSoulSkill::ATimeSpawnSoulSkill()
 	:
 	StartValue(2),
-	Delta(-0.25)
+	Delta(-0.27)
 {
 	MaxLevel = 8;
 }
