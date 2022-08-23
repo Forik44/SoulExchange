@@ -2,7 +2,7 @@
 
 USkillSystem::USkillSystem() 
 :
-SkillPoints(30)
+SkillPoints(0)
 {
 	PrimaryComponentTick.bCanEverTick = true;
 

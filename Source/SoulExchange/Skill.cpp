@@ -32,3 +32,8 @@ bool ASkill::UpLevel()
 	return false;
 }
 
+bool ASkill::DownLevel()
+{
+	return false;
+}
+

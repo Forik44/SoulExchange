@@ -49,3 +49,25 @@ bool ASpeedSoulSkill::UpLevel()
 		return false;
 	}
 }
+
+bool ASpeedSoulSkill::DownLevel()
+{
+
+	ASoulExchangeGameModeBase* GameMode = Cast<ASoulExchangeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	AFPCharacter* Character = Cast<AFPCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!GameMode)
+	{
+		return false;
+	}
+	if (Level > 1)
+	{
+		Level--;
+		GameMode->SetSoulSpeed(StartValue + Level * Delta);
+		Character->SkillsSystem->AddSkillPoints(1);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

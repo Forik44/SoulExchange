@@ -41,3 +41,24 @@ bool ATimeSoulSkill::UpLevel()
 		return false;
 	}
 }
+
+bool ATimeSoulSkill::DownLevel()
+{
+	ASoulExchangeGameModeBase* GameMode = Cast<ASoulExchangeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	AFPCharacter* Character = Cast<AFPCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!GameMode)
+	{
+		return false;
+	}
+	if (Level > 1)
+	{
+		Level--;
+		GameMode->SoulLifeTime = StartValue + Level * Delta;
+		Character->SkillsSystem->AddSkillPoints(1);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

@@ -32,4 +32,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Skills")
 	virtual bool UpLevel();
+
+	UFUNCTION(BlueprintCallable, Category = "Skills")
+	virtual bool DownLevel();
 };

@@ -18,6 +18,7 @@ protected:
 public:
 	ASpeedSoulSkill();
 	virtual bool UpLevel() override;
+	virtual bool DownLevel() override;
 private:
 	float StartValue;
 	float Delta;

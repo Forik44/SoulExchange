@@ -27,7 +27,7 @@ AFPCharacter::AFPCharacter()
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 
 	SkillsSystem = CreateDefaultSubobject<USkillSystem>(TEXT("SkillSystem"));
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -83,6 +83,10 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	InputComponent->BindAction("JumpToSoul", IE_Pressed, this, &AFPCharacter::JumpToSoul);
 	InputComponent->BindAction("JumpToSoul", IE_Released, this, &AFPCharacter::CancelJumpToSoul);
+
+	FInputActionBinding CurBinding = InputComponent->BindAction("Pause", IE_Pressed, this, &AFPCharacter::PausePressed);
+	CurBinding.bConsumeInput = true;
+	CurBinding.bExecuteWhenPaused = true;
 }
 
 void AFPCharacter::HoriMove(float value)
@@ -309,6 +313,11 @@ void AFPCharacter::CancelJumpToSoul()
 void AFPCharacter::SkillsSystemPressed()
 {
 	OnSkillSystemKeyPressedEvent.Broadcast();
+}
+
+void AFPCharacter::PausePressed()
+{
+	OnPauseKeyPressedEvent.Broadcast();
 }
 
 

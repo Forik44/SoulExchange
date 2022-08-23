@@ -17,7 +17,7 @@ class SOULEXCHANGE_API ATimeSoulSkill : public ASkill
 public:
 	ATimeSoulSkill();
 	virtual bool UpLevel() override;
-
+	virtual bool DownLevel() override;
 private:
 	float StartValue;
 	float Delta;
