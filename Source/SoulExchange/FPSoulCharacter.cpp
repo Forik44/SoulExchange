@@ -5,6 +5,7 @@
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
+#include "SoulExchangeGameModeBase.h"
 
 // Sets default values
 AFPSoulCharacter::AFPSoulCharacter()
@@ -81,6 +82,8 @@ void AFPSoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	InputComponent->BindAction("Take", IE_Pressed, this, &AFPSoulCharacter::TakePressed);
 	InputComponent->BindAction("Take", IE_Released, this, &AFPSoulCharacter::TakeReleased);
+
+	InputComponent->BindAction("JumpToSoul", IE_Pressed, this, &AFPSoulCharacter::JumpToMainCharacter);
 }
 
 void AFPSoulCharacter::PlayAudio()
@@ -190,6 +193,16 @@ void AFPSoulCharacter::TakeReleased()
 	ItemInHand->SetAllPhysicsLinearVelocity(FVector(0, 0, 0));
 	ItemInHand->SetAngularDamping(0);
 	ItemInHand = nullptr;
+}
+
+void AFPSoulCharacter::JumpToMainCharacter()
+{
+	ASoulExchangeGameModeBase* GameMode = Cast<ASoulExchangeGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!GameMode)
+	{
+		return;
+	}
+	GameMode->EndSoulLife();
 }
 
 void AFPSoulCharacter::RayToSeeInteractiveItem()

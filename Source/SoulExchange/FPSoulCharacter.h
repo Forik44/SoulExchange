@@ -58,6 +58,8 @@ private:
 	void TakePressed();
 	void TakeReleased();
 
+	void JumpToMainCharacter();
+
 	bool IsButtonFPressed;
 	bool IsButtonRPressed;
 

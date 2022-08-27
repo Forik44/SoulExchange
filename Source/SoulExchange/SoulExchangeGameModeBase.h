@@ -33,7 +33,7 @@ public:
 	FTransform QuatRotate_AroundOtherTransform(const FTransform& TargetT, const FTransform& TPoint, const FQuat& AddRotation);
 	UFUNCTION(BlueprintCallable, Category = "Interactive")
 	FTransform Rotate_AroundOtherTransform(const FTransform& TargetT, const FTransform& TPoint, const FRotator& AddRotation);
-	
+	void EndSoulLife();
 private:
 	void ChangeCharacter(ACharacter* Character);
 
@@ -45,7 +45,6 @@ private:
 
 	FTimerHandle SoulLifeTimer;
 	void StartSoulLife();
-	void EndSoulLife();
 
 	ACharacter* MainFPCharacter;
 };
